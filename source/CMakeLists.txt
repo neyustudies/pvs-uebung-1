@@ -2,6 +2,10 @@ add_executable(helloworld
     helloworld.cpp
     )
 
+add_executable(matmult
+    matmult.cpp
+    )
+
 target_link_libraries(helloworld ${LIBRARIES})
 
 add_executable(tests
