@@ -1,0 +1,41 @@
+name: ci
+
+on: [push]
+
+jobs:
+    test-linux:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: build
+              run: |
+                  mkdir build
+                  cd build
+                  cmake ..
+                  make
+
+            - name: tests
+              run: |
+                  build/source/tests
+                  build/source/helloworld
+
+    test-macos:
+        runs-on: macos-latest
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: build
+              run: |
+                  brew install libomp
+                  mkdir build
+                  cd build
+                  cmake ..
+                  make
+
+            - name: tests
+              run: |
+                  build/source/tests
+                  build/source/helloworld
