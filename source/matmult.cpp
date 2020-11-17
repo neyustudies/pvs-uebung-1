@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+#include <omp.h>
 
 // ---------------------------------------------------------------------------
 // allocate space for empty matrix A[row][col]
@@ -50,17 +53,66 @@ void free_mat(float** A, int num_rows) {
   free(A);
 }
 
+void matmult_serial(float **A, float **B, float **C, int d1, int d2, int d3) {
+  int i, j, k;          // loop variables
+
+  printf("Perform serial matrix multiplication...\n");
+
+  for (i = 0; i < d1; i++)
+    for (j = 0; j < d3; j++)
+      for (k = 0; k < d2; k++)
+        C[i][j] += A[i][k] * B[k][j];
+}
+
+void matmult_parallel(float **A, float **B, float **C, int d1, int d2, int d3) {
+  int i, j, k;          // loop variables
+  printf("Perform parallel matrix multiplication...\n");
+
+#pragma omp parallel for collapse(3)
+  for (i = 0; i < d1; i++)
+    for (j = 0; j < d3; j++)
+      for (k = 0; k < d2; k++)
+        C[i][j] += A[i][k] * B[k][j];
+}
+
+bool mat_equal(float **mat1, float **mat2, int m, int n) {
+  for (int i = 0; i < m; ++i) {
+    for (int j = 0; j < n; ++j) {
+      if (mat1[i][j] != mat2[i][j])
+        return false;
+    }
+  }
+  return true;
+}
+
+void test_mat_equal(int m, int n) {
+  float **mat1 = alloc_mat(m, n);
+  init_mat(mat1, n, n);
+  assert(mat_equal(mat1, mat1, m, n));
+  float **mat2 = alloc_mat(m, n);
+  init_mat(mat2, m, n);
+
+  // ensure mat1 and mat2 are different
+  mat1[m/2][n/2] = 0;
+  mat2[m/2][n/2] = 42;
+  assert(!mat_equal(mat1, mat2, m, n));
+  assert(!mat_equal(mat2, mat1, m, n));
+}
+
 // ---------------------------------------------------------------------------
 
 int main(int argc, char* argv[]) {
   float **A, **B, **C;  // matrices
   int d1, d2, d3;       // dimensions of matrices
-  int i, j, k;          // loop variables
 
   /* print user instruction */
-  if (argc != 4) {
+  if (argc < 4) {
     printf("Matrix multiplication: C = A x B\n");
-    printf("Usage: %s <NumRowA> <NumColA> <NumColB>\n", argv[0]);
+    printf("Usage: %s <NumRowA> <NumColA> <NumColB> [mode]\n", argv[0]);
+    printf("    Mode may be 'test', 'serial', 'parallel' or omitted.\n");
+    printf("    If ommitted, calculations are performed in parallel.\n");
+    printf("    The 'test' mode uses both methods, measures time taken\n");
+    printf("    and verifies that results match.\n");
     return 0;
   }
 
@@ -77,17 +129,42 @@ int main(int argc, char* argv[]) {
   init_mat(A, d1, d2);
   B = alloc_mat(d2, d3);
   init_mat(B, d2, d3);
-  C = alloc_mat(
-      d1, d3);  // no initialisation of C, because it gets filled by matmult
+  // no initialisation of C, because it gets filled by matmult
+  C = alloc_mat(d1, d3);
 
-  /* serial version of matmult */
-  printf("Perform matrix multiplication...\n");
-  for (i = 0; i < d1; i++)
-    for (j = 0; j < d3; j++)
-      for (k = 0; k < d2; k++)
-        C[i][j] += A[i][k] * B[k][j];
 
-  /* test output */
+  /* matmult */
+  if (argc == 5 && strcmp(argv[4], "test") == 0) {
+    printf("Testing matrix equality function...\n");
+    test_mat_equal(d1, d3);
+
+    double start_s = omp_get_wtime();
+    matmult_serial(A, B, C, d1, d2, d3);
+    double end_s = omp_get_wtime();
+    printf("Serial multiplication took %f seconds.\n", (end_s - start_s));
+
+    float **C_parallel = alloc_mat(d1, d3);
+    double start_p = omp_get_wtime();
+    matmult_parallel(A, B, C_parallel, d1, d2, d3);
+    double end_p = omp_get_wtime();
+    printf("Parallel multiplication took %f seconds.\n", (end_p - start_p));
+
+    assert(mat_equal(C, C_parallel, d1, d3));
+
+    // sanity check
+    C[0][0] = 1;
+    C_parallel[0][0] = 2;
+    assert(!mat_equal(C, C_parallel, d1, d3));
+
+    return 0;
+
+  } else if (argc == 5 && argv[4][0] == 's') {
+    matmult_serial(A, B, C, d1, d2, d3);
+  } else {
+    matmult_parallel(A, B, C, d1, d2, d3);
+  }
+
+  /* print output */
   print_mat(A, d1, d2, "A");
   print_mat(B, d2, d3, "B");
   print_mat(C, d1, d3, "C");

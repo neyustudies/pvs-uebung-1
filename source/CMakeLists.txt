@@ -6,6 +6,7 @@ add_executable(threadID
     threadID.cpp
     )
 
+target_link_libraries(matmult ${LIBRARIES})
 target_link_libraries(threadID ${LIBRARIES})
 
 add_executable(tests
