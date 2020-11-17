@@ -98,10 +98,5 @@ int main(int argc, char *argv[])
 
     printf ("\nDone.\n");
 	
-    /* free dynamic memory */
-    free_mat(A, d1);
-    free_mat(B, d2);
-    free_mat(C, d1);	
-
     return 0;
 }
