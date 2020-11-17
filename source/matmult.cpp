@@ -4,6 +4,8 @@
 #include <string.h>
 #include <omp.h>
 
+#define EPSILON 0.0001f
+
 // ---------------------------------------------------------------------------
 // allocate space for empty matrix A[row][col]
 // access to matrix elements possible with:
@@ -68,18 +70,23 @@ void matmult_parallel(float **A, float **B, float **C, int d1, int d2, int d3) {
   int i, j, k;          // loop variables
   printf("Perform parallel matrix multiplication...\n");
 
-#pragma omp parallel for collapse(3)
+#pragma omp parallel for
   for (i = 0; i < d1; i++)
     for (j = 0; j < d3; j++)
-      for (k = 0; k < d2; k++)
-        C[i][j] += A[i][k] * B[k][j];
+      for (k = 0; k < d2; k++) {
+        printf("i=%d, j=%d, k=%d\n", i, j, k);
+        float a = A[i][k];
+        float b = B[k][j];
+        C[i][j] += a * b;
+      }
 }
 
 bool mat_equal(float **mat1, float **mat2, int m, int n) {
   for (int i = 0; i < m; ++i) {
     for (int j = 0; j < n; ++j) {
-      if (mat1[i][j] != mat2[i][j])
+      if (abs(mat1[i][j] - mat2[i][j]) > EPSILON) {
         return false;
+      }
     }
   }
   return true;
