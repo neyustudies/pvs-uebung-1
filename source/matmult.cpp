@@ -74,7 +74,6 @@ void matmult_parallel(float **A, float **B, float **C, int d1, int d2, int d3) {
   for (i = 0; i < d1; i++)
     for (j = 0; j < d3; j++)
       for (k = 0; k < d2; k++) {
-        printf("i=%d, j=%d, k=%d\n", i, j, k);
         float a = A[i][k];
         float b = B[k][j];
         C[i][j] += a * b;
