@@ -1,7 +1,3 @@
-add_executable(helloworld
-    helloworld.cpp
-    )
-
 add_executable(matmult
     matmult.cpp
     )
@@ -10,7 +6,6 @@ add_executable(threadID
     threadID.cpp
     )
 
-target_link_libraries(helloworld ${LIBRARIES})
 target_link_libraries(threadID ${LIBRARIES})
 
 add_executable(tests
