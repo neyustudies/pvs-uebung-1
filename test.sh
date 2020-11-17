@@ -1,6 +1,6 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
-D_MAX=1000
+D_MAX=500
 
 test_once() {
     DIMS="$(($RANDOM % D_MAX)) $(($RANDOM % D_MAX)) $(($RANDOM % D_MAX))"
