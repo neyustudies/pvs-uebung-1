@@ -69,7 +69,7 @@ void matmult_serial(float **A, float **B, float **C, int d1, int d2, int d3) {
 void matmult_parallel(float **A, float **B, float **C, int d1, int d2, int d3) {
   printf("Perform parallel matrix multiplication...\n");
 
-#pragma omp parallel for collapse(3)
+#pragma omp parallel for collapse(2)
   for (int i = 0; i < d1; i++)
     for (int j = 0; j < d3; j++)
       for (int k = 0; k < d2; k++) {
