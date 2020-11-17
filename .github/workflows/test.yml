@@ -19,7 +19,7 @@ jobs:
             - name: tests
               run: |
                   build/source/tests
-                  build/source/helloworld
+                  build/source/matmult 20 20 20
 
     test-macos:
         runs-on: macos-latest
@@ -38,4 +38,4 @@ jobs:
             - name: tests
               run: |
                   build/source/tests
-                  build/source/helloworld
+                  build/source/matmult 20 20 20
