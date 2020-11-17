@@ -87,7 +87,7 @@ bool mat_equal(float **mat1, float **mat2, int m, int n) {
 
 void test_mat_equal(int m, int n) {
   float **mat1 = alloc_mat(m, n);
-  init_mat(mat1, n, n);
+  init_mat(mat1, m, n);
   assert(mat_equal(mat1, mat1, m, n));
   float **mat2 = alloc_mat(m, n);
   init_mat(mat2, m, n);
