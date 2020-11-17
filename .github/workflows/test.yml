@@ -20,6 +20,7 @@ jobs:
               run: |
                   build/source/tests
                   build/source/matmult 20 20 20
+                  ./test.sh
 
     test-macos:
         runs-on: macos-latest
@@ -39,3 +40,4 @@ jobs:
               run: |
                   build/source/tests
                   build/source/matmult 20 20 20
+                  ./test.sh
