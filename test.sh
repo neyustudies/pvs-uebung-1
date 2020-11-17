@@ -11,3 +11,5 @@ test_once() {
 for i in {1..100}; do
     test_once
 done
+
+build/source/matmult 2000 2000 2000 test || exit 1
