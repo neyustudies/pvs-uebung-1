@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
-project(Helloworld)
+project(PVS01)
 
 if(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
