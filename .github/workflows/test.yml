@@ -18,7 +18,6 @@ jobs:
 
             - name: tests
               run: |
-                  build/source/tests
                   build/source/matmult 20 20 20
                   ./test.sh
 
@@ -38,6 +37,5 @@ jobs:
 
             - name: tests
               run: |
-                  build/source/tests
                   build/source/matmult 20 20 20
                   ./test.sh
