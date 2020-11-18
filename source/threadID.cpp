@@ -18,7 +18,7 @@ int main (int argc, char* argv[]) {
         /* omp_get_thread_num() returns 0 if it is called from the sequential part of a program */
         if (threadID == 0) {
             numThreads = omp_get_num_threads(); //returns number of threads
-            printf("Number of threads: %d\n", numThreads); }
+            printf("Number of threads: %d\n", numThreads);
         }
     }
     end = omp_get_wtime(); //returns elapsed wall clock time in seconds, end point
