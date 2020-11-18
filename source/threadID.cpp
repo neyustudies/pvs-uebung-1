@@ -26,3 +26,21 @@ int main (int argc, char* argv[]) {
     
     return 0;
 }
+
+
+/* task 1.3
+
+Example Tests:
+
+10000 threads: This task took 0.863448 seconds
+20000 threads: This task took 1.898515 seconds
+25000 threads: libgomp: Thread creation failed: Resource temporarily unavailable
+80000 threads: Segmentation fault (core dumped)
+
+Explanation:
+
+Increasing the num_threads parameter simultaneously increases the execution time. 
+The threads are printed in random order. If the number of threads is increased to
+25000 and more, the program does not create threads because the resource is
+"temporarily unavailable". If the number of threads is increased to about 80000,
+it causes a segmentation fault. */
