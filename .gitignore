@@ -76,7 +76,6 @@ Icon
 [Bb]uild
 CMakeCache.txt
 cmake_install.cmake
-Makefile
 CMakeFiles
 build
 cmake_out
