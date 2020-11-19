@@ -1,3 +1,12 @@
+---
+titlepage: true
+title: "Parallele und Verteilte Systeme: WS20/21 -- Übung 1 -- Gruppe C"
+author: Lisa Piekarski, Klara Wichmann, Jakob Béla Ruckel
+date: "2020-11-19"
+listings-no-page-break: true
+...
+
+
 # Teil 1
 
 ## Aufgabe 1
@@ -21,7 +30,7 @@ Example Tests:
 
   * 10000 threads: `This task took 0.863448 seconds`
   * 20000 threads: `This task took 1.898515 seconds`
-  * 25000 threads: `libgomp: Thread creation failed: Resource temporarily unavailable`
+  * 25000 threads: `libgomp: Thread creation failed ...`
   * 80000 threads: `Segmentation fault (core dumped)`
 
 Explanation:
@@ -121,18 +130,18 @@ Varianten identisch ist, bis auf eine Zeile Debug-Output:
 ## Aufgabe 3
 
 Wir haben den Code auf drei Maschinen je dreimal mit folgendem Aufruf
-getestet: `./matmult 1500 1500 1500 test`:
+getestet und die Laufzeiten protokolliert:
+
+`./matmult 1500 1500 1500 test`
 
 | CPU / Kerne / Threads | Dauer Seriell | Dauer Parallel | Speedup |
 |-----------------------+---------------+----------------+---------|
-| Ryzen 1700 / 12 / 24  | 21.07 sec     | 2.36 sec       |    8.93 |
+| Ryzen 1700 / 8 / 16   | 21.07 sec     | 2.36 sec       |    8.93 |
 |                       | 20.55 sec     | 2.40 sec       |    8.56 |
 |                       | 20.58 sec     | 2.42 sec       |    8.50 |
-|-----------------------+---------------+----------------+---------|
 | i5-3570K / 4 / 4      | 36.64 sec     | 13.17 sec      |    2.78 |
 |                       | 38.15 sec     | 15.84 sec      |    2.41 |
 |                       | 36.69 sec     | 15.40 sec      |    2.38 |
-|-----------------------+---------------+----------------+---------|
 | i5-3320M / 2 / 4      | 41.90 sec     | 16.84 sec      |    2.49 |
 |                       | 42.07 sec     | 16.91 sec      |    2.49 |
 |                       | 41.97 sec     | 17.02 sec      |    2.47 |

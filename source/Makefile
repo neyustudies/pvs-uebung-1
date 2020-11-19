@@ -16,3 +16,6 @@ test: matmult
 .PHONY: clean
 clean:
 	rm threadID matmult
+
+pvs.pdf:
+	pandoc tasks.md -o pvs.pdf --from markdown --template /tmp/eisvogel.tex --listings
