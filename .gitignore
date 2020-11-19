@@ -92,3 +92,6 @@ public/fonts/
 *.code-workspace
 *.plist
 /bin/
+
+source/matmult
+source/threadID

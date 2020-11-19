@@ -1,5 +1,20 @@
 # Teil 1
 
+## Aufgabe 1
+
+Siehe `threadID.cpp`.
+
+## Aufgabe 2
+
+```bash
+[user@machine pvs-01]$ make threadID
+g++ -fopenmp -Wall -o threadID threadID.cpp
+[user@machine pvs-01]$ ./threadID
+Hello from thread 0
+Number of threads: 1
+This task took 0.000030 seconds
+```
+
 ## Aufgabe 3
 
 Example Tests:
@@ -78,9 +93,49 @@ Segmentation fault (core dumped)
 
 ## Aufgabe 2
 
+Dazu wurde die Matrixmultiplikation in zwei Funktionen aufgeteilt, wobei
+die vorgegebene serielle Variante als Referenz dient.
+Wird das Programm mit Parameter `test` ausgeführt
+(z.B. `./matmult 12 34 56 test`), werden beide Varianten ausgeführt.
+Eine Vergleichsfunktion `mat_equal` vergleicht dann die Ergebnisse.
+
+Bei Fehlern schlagen entsprechende `assert()`ations fehl.
+Die Vergleichsfunktion wird ebenfalls getestet.
+
+Alternativ kann auch mit `diff` getestet werden, dass der Output beider
+Varianten identisch ist, bis auf eine Zeile Debug-Output:
+
+```bash
+[user@machine pvs-01]$ ./matmult 123 456 789 serial > serial.output
+[user@machine pvs-01]$ ./matmult 123 456 789 parallel > parallel.output
+[user@machine pvs-01]$ ls -hl *output
+-rw-r--r-- 1 jakob jakob 4.5M Nov 19 01:43 parallel.output
+-rw-r--r-- 1 jakob jakob 4.5M Nov 19 01:43 serial.output
+[user@machine pvs-01]$ diff serial.output parallel.output
+2c2
+< Perform serial matrix multiplication...
+---
+> Perform parallel matrix multiplication...
+```
+
 ## Aufgabe 3
 
+Wir haben den Code auf drei Maschinen je dreimal mit folgendem Aufruf
+getestet: `./matmult 1500 1500 1500 test`:
 
+| CPU / Kerne / Threads | Dauer Seriell | Dauer Parallel | Speedup |
+|-----------------------+---------------+----------------+---------|
+| Ryzen 1700 / 12 / 24  | 21.07 sec     | 2.36 sec       |    8.93 |
+|                       | 20.55 sec     | 2.40 sec       |    8.56 |
+|                       | 20.58 sec     | 2.42 sec       |    8.50 |
+|-----------------------+---------------+----------------+---------|
+| i5-3570K / 4 / 4      | 36.64 sec     | 13.17 sec      |    2.78 |
+|                       | 38.15 sec     | 15.84 sec      |    2.41 |
+|                       | 36.69 sec     | 15.40 sec      |    2.38 |
+|-----------------------+---------------+----------------+---------|
+| i5-3320M / 2 / 4      | 41.90 sec     | 16.84 sec      |    2.49 |
+|                       | 42.07 sec     | 16.91 sec      |    2.49 |
+|                       | 41.97 sec     | 17.02 sec      |    2.47 |
 
 ## Aufgabe 4
 
